@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+}
+
+/*.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}*/
+
+.App-header {
+  /*background:url(/4j.png);*/
+  background-color: black;
+  height: 100px;
+  /*padding: 20px;*/
+  color: white;
+}
+body {
+      font-family: Microsoft YaHei,proxima-nova,Helvetica Neue,Helvetica,Arial,sans-serif;
+      margin: 0;
+}
+.content {
+  background-color: #f5fcff;
+}
+.post-time{
+  font-size: small;
+}
+.App-intro {
+  font-size: large;
+}
+
+.new-title, .new-content{
+  width: 360px;
+}
+.new-content{
+  height: 160px;
+}
+
