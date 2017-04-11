@@ -18,6 +18,12 @@ body {
       font-family: Microsoft YaHei,proxima-nova,Helvetica Neue,Helvetica,Arial,sans-serif;
       margin: 0;
 }
+
+.float-right {
+  float:right;
+  font-size: small;
+}
+
 .content {
   background-color: #f5fcff;
 }
@@ -28,8 +34,13 @@ body {
   font-size: large;
 }
 
-.new-title, .new-content{
+.new-title, .new-content {
   width: 360px;
+}
+.buttons {
+  width: 360px;
+  height: 30px;
+  vertical-align: bottom;
 }
 .new-content{
   height: 160px;

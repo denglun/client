@@ -1336,6 +1336,10 @@ crypto-browserify@3.3.0:
     ripemd160 "0.2.0"
     sha.js "2.2.6"
 
+cryptr@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/cryptr/-/cryptr-2.0.0.tgz#adff600162f4a2b1d98c4e2185dcdda68b0a0a72"
+
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "http://registry.npm.taobao.org/css-color-names/download/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
@@ -1596,6 +1600,10 @@ domutils@1.5.1:
 dotenv@2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/dotenv/download/dotenv-2.0.0.tgz#bd759c357aaa70365e01c96b7b0bec08a6e0d949"
+
+downloadjs@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
 
 duplexer@^0.1.1:
   version "0.1.1"

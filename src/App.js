@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import compressor from './compressor';
+import download from 'downloadjs';
+import Cryptr from 'cryptr';
 
+const cryptr = new Cryptr('my secret key');
+const IMAGE_CONFIG = { maxWidth: 360, maxHeight: 360 };
 
 class Post extends Component {
   constructor(props) {
@@ -17,25 +21,38 @@ class Post extends Component {
     }
   }
   removeImg(id) {
-    const img = document.getElementById(id).getElementsByClassName("image")[0];
+    const img = document.getElementById(id).getElementsByClassName("imageHolder")[0];
     img.style.display = 'none';
   }
   render() {
-    const { id, title, time, content } = this.props;
+    const { id, title, time, content, hasImage } = this.props;
     const { msg } = this.state;
     if (msg) {
       return <div> {msg}
         <hr /></div>;
     }
-    let timeString = new Date(time).toLocaleString();
-    timeString = timeString.split('GMT')[0];
+    let dcnt = '(no content)';
+    if (content) {
+      try {
+        dcnt = cryptr.decrypt(content);
+      } catch (e) {
+        dcnt = content;
+        console.log(e);
+      }
+    }
     return (<div className="post" id={id}>
       <h3 className="title">{title}</h3>
-      <div className="post-time">{timeString}</div>
-      <div className="image"> 
-        <img src={"./posts/" + id + "/image"} alt=":)" onError={this.removeImg.bind(this, [id])} />
-        </div>
-      <div className="content">{content}</div>
+      <div className="post-time">{new Date(time).toLocaleString().split('GMT')[0]}</div>
+      {
+        hasImage === "true" ?
+          <div>
+            <div className="imageHolder">loading image...</div>
+            <img src={"./posts/" + id + "/image"} alt=":)" onLoad={this.removeImg.bind(this, [id])} />
+          </div>
+          :
+          null
+      }
+      <div className="content">{dcnt}</div>
       <button type="button" onClick={this.remove.bind(this, [id])} >DELELE</button>
       <hr />
     </div>);
@@ -69,11 +86,20 @@ class App extends Component {
       .then(result => this.setState({ msg: '', posts: result }));
   }
 
+  export() {
+    this.setState({ msg: 'exporting...', posts: [] });
+    fetch("./posts").then(response => response.json())
+      .then(result => result.sort((a, b) => b.time - a.time))
+      .then(result => {
+        download(JSON.stringify(result), "BLOGS.json", "text/json");
+        this.setState({ msg: 'Done!' });
+      });
+  }
+
   save() {
     this.setState({ msg: 'saving...', posts: [] });
-    const image_input =  document.getElementsByClassName('new-image')[0];
+    const image_input = document.getElementsByClassName('new-image')[0];
     const imagedata = image_input.files[0];
-//    const imagedata = document.querySelector('input[type="file"]').files[0];
     const content_input = document.getElementsByClassName('new-content')[0];
     const content = content_input.value;
     const title_input = document.getElementsByClassName('new-title')[0];
@@ -82,11 +108,16 @@ class App extends Component {
       title = new Date().toLocaleString();
       title = title.split('GMT')[0];
     }
-    const sendPost = (title, content, smaller) => {
+    const sendPost = (title, content, image) => {
       const data = new FormData();
       data.append("title", title);
-      data.append("content", content);
-      data.append("image", smaller);
+      data.append("content", cryptr.encrypt(content));
+      if (image) {
+        data.append("hasImage", true);
+        data.append("image", image);
+      } else {
+        data.append("hasImage", false);
+      }
       fetch("./posts", {
         method: 'post', body: data
       }).then(res => res.json())
@@ -96,14 +127,15 @@ class App extends Component {
           content_input.value = '';
           image_input.value = '';
         });
-    }
+    };
+
     if (!imagedata) {
       sendPost(title, content);
     } else {
-      const compress = compressor({ maxWidth: 360, maxHeight: 360 });
-      compress(imagedata).then(smaller => sendPost(title, content, smaller));
+      compressor(IMAGE_CONFIG)(imagedata).then(
+        smaller => sendPost(title, content, smaller)
+      );
     }
-
   }
 
   render() {
@@ -114,9 +146,10 @@ class App extends Component {
         <div className="App-header">
           <h2>允執厥中</h2>
         </div>
-        <div>
+        <div className="buttons">
           <button type="button" onClick={this.last.bind(this)} >LAST</button>
           <button type="button" onClick={this.list.bind(this)} >LIST</button>
+          <a href="#" onClick={this.export.bind(this)} className="float-right">EXPORT</a>
         </div>
         <form encType="multipart/form-data" action="">
           <input type="text" className="new-title" />
