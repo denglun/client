@@ -46,3 +46,9 @@ body {
   height: 160px;
 }
 
+.content{
+  width: 360px;
+  /*word-break: keep-all;*/
+  white-space: pre-line;
+}
+
