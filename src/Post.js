@@ -15,8 +15,8 @@ export default class Post extends Component {
                 .then(res => this.setState(res));
         }
     }
-    removeImg(id) {
-        const img = document.getElementById(id).getElementsByClassName("imageHolder")[0];
+    removeImgMsg(id) {
+        const img = document.getElementById(id).getElementsByClassName("imageMsg")[0];
         img.style.display = 'none';
     }
     render() {
@@ -41,8 +41,8 @@ export default class Post extends Component {
             {
                 hasImage ?
                     <div>
-                        <div className="imageHolder">loading image...</div>
-                        <img src={"./posts/" + id + "/image"} alt=":)" onLoad={this.removeImg.bind(this, [id])} />
+                        <div className="imageMsg">loading image...</div>
+                        <img src={"./posts/" + id + "/image"} alt=":)" onLoad={this.removeImgMsg.bind(this, [id])} />
                     </div>
                     :
                     null

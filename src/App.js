@@ -91,26 +91,40 @@ class App extends Component {
 
     const { msg, posts } = this.state;
     return (
-      <div>
+      <div className="table">
+        <div>
+          <label className="toggle" htmlFor="toggle">&#9776; <span>Menu</span></label>
+          <input className="toggle" id="toggle" type="checkbox" />
+          <nav>
+            <ul>
+              <li><a href="#" onClick={this.last.bind(this)} >LAST</a></li>
+              <li><a href="#" onClick={this.list.bind(this)} >LIST</a></li>
+              <li><a href="#" onClick={this.export.bind(this)}>EXPORT</a></li>
+              <li><a href="#" onClick={this.export.bind(this)}>IMPORT</a></li>
+            </ul>
+          </nav>
+        </div>
         <div className="App-header">
           <h2>允執厥中</h2>
         </div>
-        <div className="buttons">
-          <button type="button" onClick={this.last.bind(this)} >LAST</button>
-          <button type="button" onClick={this.list.bind(this)} >LIST</button>
-          <a href="#" onClick={this.export.bind(this)} className="float-right">EXPORT</a>
+
+        <div className="table">
+          <form encType="multipart/form-data" action="">
+            <div className="input">
+              <input type="text" className="new-title" />
+            </div>
+            <div className="input">
+              <input className="new-image" type="file" name="image" />
+            </div>
+            <div>
+              <textarea className="new-content">
+              </textarea>
+            </div>
+            <div>
+              <button type="button" onClick={this.save.bind(this)} >ADD</button>
+            </div>
+          </form>
         </div>
-        <form encType="multipart/form-data" action="">
-          <input type="text" className="new-title" />
-          <div>
-            <input className="new-image" type="file" name="image" />
-          </div>
-          <div>
-            <textarea className="new-content">
-            </textarea>
-          </div>
-          <div> <button type="button" onClick={this.save.bind(this)} >ADD</button></div>
-        </form>
         <h3>{msg}</h3>
         {
           posts.map(post =>
