@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import download from 'downloadjs';
+import Cryptr from 'cryptr';
+
 import './App.css';
 import compressor from './compressor';
 import Post from './Post';
-import download from 'downloadjs';
-import Cryptr from 'cryptr';
+import Form from './Form';
+import Import from './Import';
 
 const cryptr = new Cryptr('my secret key');
 const IMAGE_CONFIG = { maxWidth: 360, maxHeight: 360 };
@@ -87,6 +91,18 @@ class App extends Component {
     }
   }
 
+  showImport() {
+    if (!document.getElementById("importForm")) {
+      ReactDOM.render(
+        <Import />,
+        document.getElementById('importDiv')
+      );
+    }else{
+      document.getElementById("importForm").style.display = 'block';
+    }
+    document.getElementById("postForm").style.display = 'none';
+  }
+
   render() {
 
     const { msg, posts } = this.state;
@@ -100,7 +116,7 @@ class App extends Component {
               <li><a href="#" onClick={this.last.bind(this)} >LAST</a></li>
               <li><a href="#" onClick={this.list.bind(this)} >LIST</a></li>
               <li><a href="#" onClick={this.export.bind(this)}>EXPORT</a></li>
-              <li><a href="#" onClick={this.export.bind(this)}>IMPORT</a></li>
+              <li><a href="#" onClick={this.showImport.bind(this)}>IMPORT</a></li>
             </ul>
           </nav>
         </div>
@@ -108,24 +124,10 @@ class App extends Component {
           <h2>允執厥中</h2>
         </div>
 
-        <div className="table">
-          <form encType="multipart/form-data" action="">
-            <div className="input">
-              <input type="text" className="new-title" />
-            </div>
-            <div className="input">
-              <input className="new-image" type="file" name="image" />
-            </div>
-            <div>
-              <textarea className="new-content">
-              </textarea>
-            </div>
-            <div>
-              <button type="button" onClick={this.save.bind(this)} >ADD</button>
-            </div>
-          </form>
-        </div>
         <h3>{msg}</h3>
+        <div id="importDiv" ></div>
+        <Form add={this.save.bind(this)} />
+
         {
           posts.map(post =>
             <Post {...post} key={post.id} />)

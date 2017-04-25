@@ -137,7 +137,8 @@ label.toggle {
 
 .table {
     display: table;
-  }
+    width: 360px;
+}
 .input {
   margin: 10px 0 10px 0;
 }
